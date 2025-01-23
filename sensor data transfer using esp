@@ -1,0 +1,48 @@
+#include <AP_HAL.h>
+#include <AP_Sensor.h>
+#include <AP_Math.h>
+
+const int ultrasonicTriggerPin1 = 2;
+const int ultrasonicEchoPin1 = 3;
+const int ultrasonicTriggerPin2 = 4;
+const int ultrasonicEchoPin2 = 5;
+const int irSensorPin = A0;
+
+
+void setup(){
+    Serial.begin(115200);
+    pinMode(ultrasonicTriggerPin1, OUTPUT);
+    pinMode(ultrasonicEchoPin1, INPUT);
+    pinMode(ultrasonicTriggerPin2, OUTPUT);
+    pinMode(ultrasonicEchoPin1, INPUT);
+    pinMode(irSensorPin, INPUT);
+
+    serial1.begin(115200)
+}
+
+void loop(){
+    long distance1 = readUltrasonicDistance(ultrasonicTriggerPin1, utrasonicEchoPin1);
+    long distance2 = readUltrasonicDistance(ultrasonicTriggerPin2, utrasonicEchoPin2);
+    int irValue =analogRead(irSensorPin);
+
+    sendDataToESP(distance1,distance2,irValue);
+    }
+
+    delay(5000)
+
+    long readUltrasonicDiostance(int triggerPin, int echoPin){
+        digitalWrite(triggerPin,LOW);
+        delayMicroseconds(10);
+        digitalWrite(triggerPin,HIGH);
+
+        long duration = pulseIn(echoPin,HIGH);
+
+        long distance = duration * 0.0343 / 2;
+        return distance
+    }
+
+    void sendDataToESP(long distance1, long distance2,int irValue){
+        String data ="distance1:" + String(distance1 )+"distance2:" + String(distance2 )+", IRValue:"+String(irValue);
+
+        Serial1.println(data);
+    }
